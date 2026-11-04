@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nidhin Shan · Portfolio</title>
+  <meta name="description" content="Personal portfolio: roles, projects, hobbies and journey of Nidhin Shan." />
+  
+  <!-- Preconnect and Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body data-page="home" data-base="">
+  <div id="site-header"></div>
+
+  <main class="container">
+    <div class="bento">
+
+      <!-- Interactive 3D Hero Section (Developer Avatar Bust with Interactive Modes & 360° Orbit) -->
+      <section class="tile t-hero spot reveal" id="hero-section">
+        <div class="hero-layout">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <span class="status-pulse"></span>
+              <span>Available for Technical Roles &amp; Collaborations</span>
+            </div>
+            <p class="eyebrow">Hello, I'm</p>
+            <h1 class="hero-title"><span class="accent" data-bind="name">Nidhin Shan</span></h1>
+            <h2 class="role" data-bind="role">B.Tech CSE Student · Full-Stack Developer</h2>
+            <p class="lead" data-bind="bio"></p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="templates/contact.html">
+                <span>Get in touch</span>
+                <span class="btn-icon">→</span>
+              </a>
+              <a class="btn btn-ghost" id="resume-btn" download>
+                <span>Download CV</span>
+                <span class="btn-icon">↓</span>
+              </a>
+              <div class="hero-socials">
+                <a class="icon-link" id="gh-link" target="_blank" rel="noopener" aria-label="GitHub">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                  <span>GitHub</span>
+                </a>
+                <a class="icon-link" id="li-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                  <span>LinkedIn</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D Interactive Canvas Viewport -->
+          <div class="hero-3d-wrap" id="hero-3d-wrap" title="Drag to Orbit 360° · Switch modes with top buttons · Double-click to spin">
+            <canvas id="hero-3d-canvas" aria-label="Interactive 3D Male Developer Avatar"></canvas>
+            <div class="canvas-badge">
+              <span class="live-dot"></span>
+              <span>Interactive 3D · Drag to Orbit 360°</span>
+            </div>
+            <!-- Graceful Fallback if WebGL is unavailable -->
+            <div class="hero-3d-fallback" id="hero-3d-fallback" style="display: none;">
+              <div class="fallback-glow"></div>
+              <div class="fallback-icon">👨‍💻</div>
+              <p>Developer Avatar Active</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Stats Bento Tile -->
+      <section class="tile t-stats reveal" id="stats"></section>
+
+      <!-- Current Focus / Live Status Tile -->
+      <section class="tile t-status reveal" id="status"></section>
+
+      <!-- Leadership Preview Tile -->
+      <a class="tile tilt t-wide reveal" href="templates/roles.html">
+        <h3>Leadership &amp; Roles <span class="arrow">→</span></h3>
+        <p class="meta">Campus governance &amp; technical festival operations</p>
+        <ul class="mini" id="roles-mini"></ul>
+      </a>
+
+      <!-- Journey Preview Tile -->
+      <a class="tile tilt t-wide reveal" href="templates/timeline.html">
+        <h3>My Journey <span class="arrow">→</span></h3>
+        <p class="meta">Milestones, hackathons &amp; career evolutions</p>
+        <ul class="mini" id="timeline-mini"></ul>
+      </a>
+
+      <!-- Project tiles inserted dynamically by main.js -->
+      <div class="contents" id="projects-bento"></div>
+
+      <!-- Beyond The Code · Hobbies Showcase Preview Banner (Links to dedicated templates/hobbies.html) -->
+      <a class="tile tilt t-hobbies-banner reveal" href="templates/hobbies.html" id="hobbies-section">
+        <div class="hobbies-banner-head">
+          <div>
+            <span class="eyebrow">BEYOND THE CODE</span>
+            <h3 class="hobbies-banner-title">Passions &amp; Hobbies <span class="arrow">→</span></h3>
+            <p class="meta">Football, movies &amp; series, reading, and geopolitics</p>
+          </div>
+          <span class="banner-pill-btn">View dedicated page ↗</span>
+        </div>
+        <div class="hobbies-banner-cards" id="hobbies-banner-cards">
+          <!-- Dynamically populated from DATA.hobbies by main.js -->
+        </div>
+      </a>
+
+      <!-- Let's Build Something Together CTA Tile -->
+      <a class="tile tilt t-contact reveal" href="templates/contact.html">
+        <h3>Let's build something together</h3>
+        <p class="meta">Have an idea or opportunity? Say hello <span class="arrow">→</span></p>
+      </a>
+
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="static/js/data.js"></script>
+  <script src="static/js/main.js"></script>
+  <script src="static/js/hero-3d.js"></script>
+</body>
+</html>

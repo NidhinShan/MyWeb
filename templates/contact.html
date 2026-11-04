@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact · Nidhin Shan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
+  <link rel="stylesheet" href="../static/css/style.css" />
+</head>
+<body data-page="contact" data-base="../">
+  <div id="site-header"></div>
+  <main class="container section">
+    <div class="section-head">
+      <h1>Let's <span class="accent">Connect</span></h1>
+    </div>
+    <div class="contact-layout">
+      <form id="contact-form" class="card form reveal" novalidate>
+        <label>Name
+          <input type="text" name="name" required minlength="2" autocomplete="name" placeholder="Your name" />
+          <small class="error"></small>
+        </label>
+        <label>Email
+          <input type="email" name="email" required autocomplete="email" placeholder="your.email@example.com" />
+          <small class="error"></small>
+        </label>
+        <label>Subject
+          <input type="text" name="subject" required minlength="3" placeholder="Project inquiry / Collaboration" />
+          <small class="error"></small>
+        </label>
+        <label>Message
+          <textarea name="message" rows="5" required minlength="10" placeholder="Tell me about your project, ideas, or timeline..."></textarea>
+          <small class="error"></small>
+        </label>
+        <button class="btn btn-primary" type="submit">
+          <span>Send message</span>
+          <span class="btn-icon">→</span>
+        </button>
+        <p id="form-status" role="status"></p>
+      </form>
+
+      <aside class="reach">
+        <a class="card tilt reach-card reveal" id="mail-link">
+          <span>✉️</span>
+          <div>
+            <b>Email</b>
+            <small data-bind="email" style="display:block;"></small>
+          </div>
+        </a>
+        <a class="card tilt reach-card reveal" id="li-link" target="_blank" rel="noopener">
+          <span>💼</span>
+          <div>
+            <b>LinkedIn</b>
+            <small style="display:block;">Connect professionally</small>
+          </div>
+        </a>
+        <a class="card tilt reach-card reveal" id="gh-link" target="_blank" rel="noopener">
+          <span>🐙</span>
+          <div>
+            <b>GitHub</b>
+            <small style="display:block;">Explore repositories</small>
+          </div>
+        </a>
+      </aside>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../static/js/data.js"></script>
+  <script src="../static/js/main.js"></script>
+</body>
+</html>

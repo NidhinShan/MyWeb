@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hobbies &amp; Passions · Nidhin Shan</title>
+  <meta name="description" content="Beyond the code: football, movies, reading, and geopolitics - hobbies of Nidhin Shan." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
+  <link rel="stylesheet" href="../static/css/style.css" />
+</head>
+<body data-page="hobbies" data-base="../">
+  <div id="site-header"></div>
+
+  <main class="container section">
+    <div class="section-head-wrap">
+      <span class="eyebrow">BEYOND THE CODE</span>
+      <h1>Passions &amp; <span class="accent">Hobbies</span></h1>
+      <p class="lead">Things I enjoy doing when I'm not writing code or studying.</p>
+    </div>
+
+    <!-- Category Filter Switcher -->
+    <div class="hobbies-filter-bar" id="hobbies-filter-bar">
+      <button class="filter-btn active" data-hobby-filter="all">All</button>
+      <button class="filter-btn" data-hobby-filter="football">⚽ Football</button>
+      <button class="filter-btn" data-hobby-filter="cinema">🎬 Movies &amp; Series</button>
+      <button class="filter-btn" data-hobby-filter="reading">📚 Books</button>
+      <button class="filter-btn" data-hobby-filter="geopolitics">🌍 Geopolitics</button>
+    </div>
+
+    <!-- Hobbies Deck Container (Dynamically rendered by main.js) -->
+    <div class="hobbies-page-deck" id="hobbies-page-deck"></div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../static/js/data.js"></script>
+  <script src="../static/js/main.js"></script>
+</body>
+</html>

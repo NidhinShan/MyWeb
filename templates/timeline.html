@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Timeline &amp; Journey · Nidhin Shan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
+  <link rel="stylesheet" href="../static/css/style.css" />
+</head>
+<body data-page="timeline" data-base="../">
+  <div id="site-header"></div>
+  <main>
+    <section class="container section" style="padding-bottom:1rem">
+      <h1><span class="accent">My Journey</span> &amp; Milestones</h1>
+      <p class="lead">Key achievements, hackathons, technical evolutions, and pivotal milestones over the years.</p>
+      <div class="filters" id="filters" role="group" aria-label="Filter milestones"></div>
+    </section>
+
+    <!-- Floating Milestone Constellation Matrix -->
+    <section class="container section constellation-wrap">
+      <div class="timeline-line"></div>
+      <div class="constellation-grid" id="timeline-matrix"></div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../static/js/data.js"></script>
+  <script src="../static/js/main.js"></script>
+</body>
+</html>
