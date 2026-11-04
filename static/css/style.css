@@ -927,23 +927,6 @@ a:hover .arrow {
   color: var(--text-bright);
 }
 
-.banner-pill-btn {
-  font-family: var(--mono);
-  font-size: 0.82rem;
-  color: var(--accent);
-  background: rgba(0, 240, 255, 0.08);
-  border: 1px solid rgba(0, 240, 255, 0.25);
-  padding: 0.45rem 1rem;
-  border-radius: var(--radius-pill);
-  transition: all 0.2s ease;
-}
-
-.t-hobbies-banner:hover .banner-pill-btn {
-  background: var(--accent);
-  color: var(--on-accent);
-  box-shadow: 0 0 16px var(--glow);
-}
-
 .hobbies-banner-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
