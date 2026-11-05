@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-nidhin-shan",
+  "version": "2.0.0",
+  "description": "Interactive developer portfolio with Slate Stone & Burnt Ochre theme and 3D avatar",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["portfolio", "threejs", "developer"],
+  "author": "Nidhin Shan",
+  "license": "MIT"
+}

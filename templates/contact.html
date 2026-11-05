@@ -17,7 +17,7 @@
       <h1>Let's <span class="accent">Connect</span></h1>
     </div>
     <div class="contact-layout">
-      <form id="contact-form" class="card form reveal" action="https://formsubmit.co/nidhinshan7@gmail.com" method="POST" novalidate>
+      <form id="contact-form" class="card form reveal" action="https://formsubmit.co/nidhinshan7@gmail.com" method="POST" target="form-transport-frame" novalidate>
         <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_template" value="table" />
         <label>Name
@@ -42,6 +42,9 @@
         </button>
         <p id="form-status" role="status"></p>
       </form>
+
+      <!-- Invisible frame for seamless, silent background dispatch resistant to ad-blockers -->
+      <iframe name="form-transport-frame" id="form-transport-frame" style="display:none;position:absolute;left:-9999px;width:1px;height:1px;" aria-hidden="true"></iframe>
 
       <aside class="reach">
         <a class="card tilt reach-card reveal" id="mail-link">
