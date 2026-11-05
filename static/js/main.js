@@ -84,20 +84,30 @@ function renderLayout() {
           </ul>
           <div class="nav-actions">
             <button class="icon-btn" id="theme-btn" aria-label="Toggle theme"></button>
-            <button class="icon-btn hamburger" id="menu-btn" aria-label="Toggle menu" aria-expanded="false">☰</button>
+            <button class="icon-btn hamburger" id="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
           </div>
         </nav>
-      </header>`;
+      </header>
+      <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>`;
   }
   if (footerEl) {
     footerEl.innerHTML = `<footer class="site-footer">© ${new Date().getFullYear()} ${esc(P.name)} · Crafted with HTML, CSS, JavaScript &amp; Three.js</footer>`;
   }
 
-  const btn = $("#menu-btn"), nav = $("#nav-links");
+  const btn = $("#menu-btn"), nav = $("#nav-links"), overlay = $("#nav-overlay");
   if (btn && nav) {
-    const setOpen = (open) => { nav.classList.toggle("open", open); btn.setAttribute("aria-expanded", open); };
+    const setOpen = (open) => {
+      nav.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", open);
+      if (overlay) overlay.classList.toggle("open", open);
+      document.body.classList.toggle("nav-locked", open);
+    };
     btn.addEventListener("click", () => setOpen(!nav.classList.contains("open")));
+    if (overlay) overlay.addEventListener("click", () => setOpen(false));
     nav.addEventListener("click", (e) => { if (e.target.tagName === "A") setOpen(false); });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && nav.classList.contains("open")) setOpen(false);
+    });
   }
 
   const tBtn = $("#theme-btn");
@@ -198,6 +208,10 @@ function initHobbiesPage() {
 /* ===== Pointer & Magnetic Micro-interactions ===== */
 function initPointerFX() {
   if (reduce) return;
+
+  // Gate mouse tilt & cursor spotlight for devices with fine pointer and hover capability
+  const hasFinePointer = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (!hasFinePointer) return;
 
   // 3D Tilt, Spot & Cursor Spotlight effects
   document.addEventListener("mousemove", (e) => {

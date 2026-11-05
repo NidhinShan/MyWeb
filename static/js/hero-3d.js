@@ -636,7 +636,12 @@
   }
 
   window.addEventListener('resize', handleResize);
+  window.addEventListener('orientationchange', handleResize);
   window.addEventListener('load', handleResize);
+  if (window.ResizeObserver) {
+    const resizeObserver = new ResizeObserver(() => handleResize());
+    resizeObserver.observe(container);
+  }
   setTimeout(handleResize, 100);
 
   // ==========================================

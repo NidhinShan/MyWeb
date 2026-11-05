@@ -534,11 +534,12 @@
       });
     }
 
-    // Scrub Seeking (Clicking anywhere on progress bar seeks the full song)
+    // Scrub Seeking (Clicking or touch-dragging anywhere on progress bar seeks the full song)
     if (dom.progressBar) {
-      dom.progressBar.addEventListener("click", (e) => {
+      const seekToPosition = (clientX) => {
         const rect = dom.progressBar.getBoundingClientRect();
-        const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        if (rect.width <= 0) return;
+        const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
         if (ytPlayer && ytReady && typeof ytPlayer.getDuration === "function") {
           const dur = ytPlayer.getDuration() || PLAYLIST[currentIdx].approxSec;
           ytPlayer.seekTo(pos * dur, true);
@@ -546,15 +547,37 @@
           fallbackAudio.currentTime = pos * fallbackAudio.duration;
         }
         if (dom.progressFill) dom.progressFill.style.width = `${pos * 100}%`;
+      };
+
+      dom.progressBar.addEventListener("click", (e) => {
+        seekToPosition(e.clientX);
       });
+
+      dom.progressBar.addEventListener("touchstart", (e) => {
+        if (e.touches && e.touches[0]) seekToPosition(e.touches[0].clientX);
+      }, { passive: true });
+
+      dom.progressBar.addEventListener("touchmove", (e) => {
+        if (e.touches && e.touches[0]) seekToPosition(e.touches[0].clientX);
+      }, { passive: true });
     }
 
     // Expandable Playlist Queue Drawer
     if (dom.queueToggle && dom.queueDrawer) {
-      dom.queueToggle.addEventListener("click", () => {
+      dom.queueToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
         isDrawerOpen = !isDrawerOpen;
         dom.queueDrawer.classList.toggle("open", isDrawerOpen);
         dom.queueToggle.classList.toggle("active", isDrawerOpen);
+      });
+
+      // Close drawer when clicking or tapping outside on mobile/desktop
+      document.addEventListener("click", (e) => {
+        if (isDrawerOpen && !e.target.closest("#hero-music-card")) {
+          isDrawerOpen = false;
+          dom.queueDrawer.classList.remove("open");
+          dom.queueToggle.classList.remove("active");
+        }
       });
     }
 
