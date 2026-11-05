@@ -162,6 +162,12 @@ const DATA = {
     },
     { 
       year: 2026, 
+      title: "Treasurer — STACS", 
+      category: "Academic",
+      description: "Department leadership by handling association funds, registrations, and event accounts." 
+    },
+    { 
+      year: 2026, 
       title: "DEDSEC CTF Competition", 
       category: "Competition",
       description: "Competed in cybersecurity Capture The Flag challenges focusing on web exploits, cryptography, and log analysis." 
@@ -179,13 +185,7 @@ const DATA = {
       description: "Engineered and showcased unconventional, creative tech concepts during a fast-paced sprint." 
     },
     { 
-      year: 2024, 
-      title: "Treasurer — STACS", 
-      category: "Academic",
-      description: "Department leadership by handling association funds, registrations, and event accounts." 
-    },
-    { 
-      year: 2024, 
+      year: 2025, 
       title: "Joint Treasurer — STACS", 
       category: "Academic",
       description: "Started department leadership by handling association funds, registrations, and event accounts." 
