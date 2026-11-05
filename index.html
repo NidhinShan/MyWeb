@@ -74,6 +74,72 @@
       <!-- Key Stats Bento Tile -->
       <section class="tile t-stats reveal" id="stats"></section>
 
+      <!-- Anti-Gravity Earth-Tone Audio Player Bento Tile -->
+      <section class="tile t-music-player tilt reveal" id="music-player-section">
+        <div class="mp-luminescent-edge"></div>
+        <div class="mp-header">
+          <div class="mp-badge">
+            <span class="mp-dot"></span>
+            <span>Audio Lab · Focus Beats</span>
+          </div>
+          <button class="mp-queue-btn" id="mp-queue-toggle" aria-label="Toggle playlist drawer">
+            <span class="mp-queue-count">8</span>
+            <span>Queue</span>
+            <svg class="mp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="mp-track-wrap">
+          <div class="mp-cover" id="mp-cover">
+            <div class="mp-cover-fallback"><span class="mp-cover-emoji">🎧</span></div>
+          </div>
+          <div class="mp-track-info">
+            <span class="mp-eyebrow">Now Playing</span>
+            <h3 class="mp-title" id="mp-title">Attention</h3>
+            <p class="mp-artist" id="mp-artist">Charlie Puth</p>
+          </div>
+          <div class="mp-eq-container" id="mp-eq">
+            <span class="mp-eq-bar"></span>
+            <span class="mp-eq-bar"></span>
+            <span class="mp-eq-bar"></span>
+            <span class="mp-eq-bar"></span>
+            <span class="mp-eq-bar"></span>
+          </div>
+        </div>
+        <div class="mp-progress-container">
+          <div class="mp-progress-bar" id="mp-progress-bar">
+            <div class="mp-progress-fill" id="mp-progress-fill">
+              <div class="mp-progress-knob"></div>
+            </div>
+          </div>
+          <div class="mp-time-row">
+            <span id="mp-time-current" class="font-mono">0:00</span>
+            <span id="mp-time-total" class="font-mono">3:31</span>
+          </div>
+        </div>
+        <div class="mp-controls">
+          <button class="mp-ctrl-btn" id="mp-mute-btn" title="Toggle Mute" aria-label="Mute or Unmute">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          </button>
+          <button class="mp-ctrl-btn" id="mp-prev-btn" title="Previous Track" aria-label="Previous Track">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+          <button class="mp-play-btn" id="mp-play-btn" title="Play / Pause" aria-label="Play or Pause Track">
+            <svg id="mp-play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <svg id="mp-pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </button>
+          <button class="mp-ctrl-btn" id="mp-next-btn" title="Next Track" aria-label="Next Track">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
+        </div>
+        <div class="mp-queue-drawer" id="mp-queue-drawer">
+          <div class="mp-queue-header">
+            <span>Queued Tracks</span>
+            <span class="mp-queue-badge">7 Tracks</span>
+          </div>
+          <div class="mp-queue-list" id="mp-queue-list"></div>
+        </div>
+      </section>
+
       <!-- Current Focus / Live Status Tile -->
       <section class="tile t-status reveal" id="status"></section>
 
@@ -124,5 +190,6 @@
   <script src="static/js/data.js"></script>
   <script src="static/js/main.js"></script>
   <script src="static/js/hero-3d.js"></script>
+  <script src="static/js/music-player.js"></script>
 </body>
 </html>

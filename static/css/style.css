@@ -466,7 +466,8 @@ a.tile, a.card {
 .card-links { 
   display: flex; 
   gap: 1.3rem; 
-  margin-top: 1.25rem; 
+  margin-top: auto;
+  padding-top: 1rem;
   font-size: 0.92rem; 
   font-weight: 600;
 }
@@ -916,6 +917,511 @@ a:hover .arrow {
   color: var(--text-primary); 
   font-weight: 600; 
   margin-right: 0.5rem; 
+}
+
+/* =========================================================================
+   ZERO-GRAVITY AUDIO LAB / MUSIC PLAYER BENTO TILE
+   Earth-tone palette: #FFFFFF surface, #B8833F ochre accent, #4E5D6C slate
+   ========================================================================= */
+
+.t-music-player {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 1.85rem;
+  box-shadow: var(--shadow-ambient);
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.t-music-player:hover {
+  transform: translateY(-4px);
+  border-color: rgba(184, 131, 63, 0.35);
+  box-shadow: 0 16px 36px -8px rgba(184, 131, 63, 0.12);
+}
+
+/* Luminescent top edge glow */
+.mp-luminescent-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 5%, rgba(184, 131, 63, 0.45) 50%, transparent 95%);
+  pointer-events: none;
+}
+
+/* Header */
+.mp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.15rem;
+}
+
+.mp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--accent-secondary);
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-pill);
+}
+
+.mp-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 6px var(--accent-primary);
+  animation: pulseOchre 1.6s infinite ease-in-out;
+}
+
+.mp-queue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.mp-queue-btn:hover,
+.mp-queue-btn.active {
+  color: var(--text-primary);
+  border-color: rgba(184, 131, 63, 0.4);
+  background: rgba(184, 131, 63, 0.08);
+}
+
+.mp-queue-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: #FFFFFF;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.mp-chevron {
+  transition: transform 0.25s ease;
+}
+
+.mp-queue-btn.active .mp-chevron {
+  transform: rotate(180deg);
+}
+
+/* Active Track Layout */
+.mp-track-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.05rem;
+  margin-bottom: 1.15rem;
+}
+
+.mp-cover {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-subtle);
+  box-shadow: 0 4px 14px rgba(30, 32, 34, 0.06);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.mp-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.mp-cover:hover .mp-cover-img {
+  transform: scale(1.05);
+}
+
+.mp-cover-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.mp-cover-emoji {
+  font-size: 1.8rem;
+}
+
+.mp-track-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mp-eyebrow {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+
+.mp-title {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  margin: 0 0 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mp-artist {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Soundwave Equalizer Bars */
+.mp-eq-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 3.5px;
+  height: 24px;
+  padding: 0 0.2rem;
+  flex-shrink: 0;
+}
+
+.mp-eq-bar {
+  width: 3.5px;
+  height: 4px;
+  background: var(--accent-primary);
+  border-radius: 2px;
+  transition: height 0.15s ease;
+}
+
+@keyframes mpEqAnim {
+  0% { height: 4px; }
+  50% { height: 22px; }
+  100% { height: 8px; }
+}
+
+.mp-eq-bar.animating:nth-child(1) { animation: mpEqAnim 0.75s ease-in-out infinite alternate; animation-delay: 0s; }
+.mp-eq-bar.animating:nth-child(2) { animation: mpEqAnim 0.75s ease-in-out infinite alternate; animation-delay: 0.22s; }
+.mp-eq-bar.animating:nth-child(3) { animation: mpEqAnim 0.75s ease-in-out infinite alternate; animation-delay: 0.44s; }
+.mp-eq-bar.animating:nth-child(4) { animation: mpEqAnim 0.75s ease-in-out infinite alternate; animation-delay: 0.12s; }
+.mp-eq-bar.animating:nth-child(5) { animation: mpEqAnim 0.75s ease-in-out infinite alternate; animation-delay: 0.35s; }
+
+/* Progress / Scrub Bar */
+.mp-progress-container {
+  margin-bottom: 1.15rem;
+}
+
+.mp-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  position: relative;
+  transition: height 0.15s ease;
+}
+
+.mp-progress-bar:hover {
+  height: 8px;
+}
+
+.mp-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-primary-hover) 100%);
+  border-radius: var(--radius-pill);
+  position: relative;
+  transition: width 0.1s linear;
+}
+
+.mp-progress-knob {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--accent-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  pointer-events: none;
+}
+
+.mp-progress-bar:hover .mp-progress-knob {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.15);
+}
+
+.mp-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.4rem;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* Controls */
+.mp-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.mp-ctrl-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.mp-ctrl-btn:hover {
+  color: var(--text-primary);
+  border-color: rgba(184, 131, 63, 0.4);
+  background: var(--bg-surface);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 32, 34, 0.06);
+}
+
+.mp-ctrl-btn.muted {
+  color: var(--accent-primary);
+  border-color: rgba(184, 131, 63, 0.5);
+  background: rgba(184, 131, 63, 0.08);
+}
+
+.mp-play-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: #FFFFFF;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 20px var(--accent-glow);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.mp-play-btn:hover {
+  background: var(--accent-primary-hover);
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 10px 26px rgba(184, 131, 63, 0.3);
+}
+
+.mp-play-btn:active {
+  transform: scale(0.96);
+}
+
+/* Queue Drawer (Expandable Accordion) */
+.mp-queue-drawer {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.28s ease,
+              margin-top 0.28s ease,
+              padding-top 0.28s ease;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 1px solid transparent;
+}
+
+.mp-queue-drawer.open {
+  max-height: 380px;
+  opacity: 1;
+  margin-top: 1.25rem;
+  padding-top: 1.1rem;
+  border-top-color: var(--border-subtle);
+}
+
+.mp-queue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mp-queue-badge {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--accent-secondary);
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
+}
+
+.mp-queue-list {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-right: 0.35rem;
+}
+
+.mp-queue-list::-webkit-scrollbar {
+  width: 4px;
+}
+.mp-queue-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.mp-queue-list::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 9999px;
+}
+.mp-queue-list::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+.mp-queue-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.mp-queue-item:hover {
+  background: var(--bg-surface-subtle);
+  border-color: var(--border-subtle);
+}
+
+.mp-queue-item.active {
+  background: rgba(184, 131, 63, 0.08);
+  border-color: rgba(184, 131, 63, 0.25);
+  border-left: 3px solid var(--accent-primary);
+}
+
+.mp-queue-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.mp-queue-num {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.mp-queue-item.active .mp-queue-num {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.mp-queue-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mp-queue-title {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mp-queue-item.active .mp-queue-title {
+  color: var(--accent-primary);
+}
+
+.mp-queue-artist {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mp-queue-right {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+
+.mp-queue-dur {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.mp-queue-playing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 6px var(--accent-primary);
+  animation: pulseOchre 1.4s infinite ease-in-out;
 }
 
 /* =========================================================================
@@ -1499,6 +2005,10 @@ a:hover .arrow {
     grid-column: span 2; 
   }
 
+  .t-music-player {
+    grid-column: span 2;
+  }
+
   .t-contact {
     grid-column: span 2;
   }
@@ -1580,8 +2090,25 @@ a:hover .arrow {
     grid-template-columns: 1fr; 
   }
 
-  .t-hero, .t-stats, .t-status, .t-wide, .t-hobbies-banner, .t-contact { 
+  .t-hero, .t-stats, .t-status, .t-wide, .t-hobbies-banner, .t-contact, .t-music-player { 
     grid-column: span 1; 
+  }
+
+  .t-music-player {
+    padding: 1.4rem;
+  }
+
+  .mp-cover {
+    width: 54px;
+    height: 54px;
+  }
+
+  .mp-title {
+    font-size: 1.05rem;
+  }
+
+  .mp-controls {
+    gap: 0.95rem;
   }
 
   .t-hobbies-banner {
