@@ -7,7 +7,9 @@ const DATA = {
     email: "nidhinshan7@gmail.com",
     github: "https://github.com/NidhinShan",
     linkedin: "https://www.linkedin.com/in/Nidhin-Shan",
-    resume: "static/assets/resume.pdf"
+    resume: "static/assets/resume.pdf",
+    // Optional: Get a free Web3Forms access key at https://web3forms.com for instant in-app email delivery without activation redirects
+    web3forms_key: ""
   },
 
   // Animated numbers on the home page (value counts up from 0)

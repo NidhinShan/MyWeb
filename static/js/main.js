@@ -104,11 +104,12 @@ function renderLayout() {
   if (tBtn) {
     const applyTheme = (t) => {
       root.dataset.theme = t;
-      try { localStorage.setItem("theme", t); } catch (e) {}
       tBtn.textContent = t === "dark" ? "☀️" : "🌙";
       tBtn.setAttribute("aria-label", t === "dark" ? "Switch to light mode" : "Switch to dark mode");
     };
-    applyTheme(root.dataset.theme || "light");
+    // Always default to Light Mode ("Slate Stone & Burnt Ochre")
+    applyTheme("light");
+    try { localStorage.setItem("theme", "light"); } catch (e) {}
     tBtn.addEventListener("click", () => applyTheme(root.dataset.theme === "dark" ? "light" : "dark"));
   }
 }
@@ -335,17 +336,18 @@ function initTimeline() {
   draw();
 }
 
-/* ===== Contact Form with Automated Email Delivery & Direct Fallback ===== */
+/* ===== Contact Form with Automated Email Delivery & Direct Reach ===== */
 function initContact() {
   const form = $("#contact-form");
   if (!form) return;
   const status = $("#form-status");
   const targetEmail = P.email || "nidhinshan7@gmail.com";
+  const web3Key = P.web3forms_key || "";
 
-  // Ensure form is configured for silent transport
+  // Set default form action & target
   form.action = FORM_ENDPOINT || `https://formsubmit.co/${targetEmail}`;
   form.method = "POST";
-  form.target = "form-transport-frame";
+  form.target = "_blank";
 
   const check = (field) => {
     let msg = "";
@@ -379,17 +381,53 @@ function initContact() {
     }
 
     const data = Object.fromEntries(new FormData(form));
-    let dispatchedViaApi = false;
+    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(targetEmail)}&su=${encodeURIComponent(data.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(`${data.message}\n\n— Sent by ${data.name} (${data.email})`)}`;
+    const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent(data.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(`${data.message}\n\n— Sent by ${data.name} (${data.email})`)}`;
 
-    // 1. First-Party Same-Origin Route (/api/contact)
-    // Serverless (Vercel / Netlify / Node.js) - Completely immune to browser ad-blockers
+    // Route 1: If Web3Forms Access Key is provided, dispatch via Web3Forms JSON API
+    if (web3Key) {
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: web3Key,
+            name: data.name,
+            email: data.email,
+            subject: data.subject || `Portfolio message from ${data.name}`,
+            message: data.message
+          })
+        });
+
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && json.success) {
+          if (status) {
+            status.className = "ok";
+            status.innerHTML = `
+              <div class="status-box ok">
+                <b>✓ Message sent directly!</b>
+                <p>Thank you, <strong>${esc(data.name)}</strong>! Your message has been delivered to <strong>${esc(targetEmail)}</strong>. I will get back to you shortly.</p>
+              </div>
+            `;
+          }
+          form.reset();
+          fields.forEach((f) => f.classList.remove("valid"));
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnContent;
+          }
+          return;
+        }
+      } catch (err) {
+        console.warn("Web3Forms dispatch issue:", err);
+      }
+    }
+
+    // Route 2: Try Same-Origin /api/contact if available (Node.js server or Vercel/Netlify)
     try {
-      const res = await fetch("/api/contact", {
+      const apiRes = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
           name: data.name,
           email: data.email,
@@ -399,46 +437,59 @@ function initContact() {
         })
       });
 
-      if (res.ok) {
-        dispatchedViaApi = true;
+      if (apiRes.ok) {
+        if (status) {
+          status.className = "ok";
+          status.innerHTML = `
+            <div class="status-box ok">
+              <b>✓ Message sent directly!</b>
+              <p>Thank you, <strong>${esc(data.name)}</strong>! Your message has been delivered to <strong>${esc(targetEmail)}</strong>.</p>
+            </div>
+          `;
+        }
+        form.reset();
+        fields.forEach((f) => f.classList.remove("valid"));
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnContent;
+        }
+        return;
       }
     } catch (_) {
-      // Endpoint not present (e.g., pure static hosting like GitHub Pages)
-      dispatchedViaApi = false;
+      // /api/contact not available on static hosting
     }
 
-    // 2. Silent Native Hidden-Iframe Transport (Static Hosting / GitHub Pages)
-    // Submits natively via standard HTML form POST into an invisible iframe.
-    // Brave Shields, uBlock Origin & Privacy Badger NEVER block native form POSTs targeting subframes.
-    if (!dispatchedViaApi) {
-      try {
-        form.target = "form-transport-frame";
-        form.action = FORM_ENDPOINT || `https://formsubmit.co/${targetEmail}`;
-        HTMLFormElement.prototype.submit.call(form);
-      } catch (submitErr) {
-        console.warn("Silent iframe dispatch notice:", submitErr);
-      }
-    }
+    // Route 3: FormSubmit Standard Delivery (Opens in tab for verification & activation)
+    form.action = FORM_ENDPOINT || `https://formsubmit.co/${targetEmail}`;
+    form.method = "POST";
+    form.target = "_blank";
+    HTMLFormElement.prototype.submit.call(form);
 
-    // 3. Smooth, immediate in-app confirmation
-    setTimeout(() => {
-      if (status) {
-        status.className = "ok";
-        status.innerHTML = `
-          <div class="status-box ok">
-            <b>✓ Message sent directly!</b>
-            <p>Thank you, <strong>${esc(data.name || 'there')}</strong>! Your message has been dispatched to <strong>${esc(targetEmail)}</strong>. I will get back to you shortly.</p>
+    if (status) {
+      status.className = "ok";
+      status.innerHTML = `
+        <div class="status-box ok">
+          <b>✓ Form dispatched to delivery gateway!</b>
+          <p>A secure gateway tab has opened to transmit your message to <strong>${esc(targetEmail)}</strong>.</p>
+          <div style="margin-top:0.75rem; padding:0.6rem 0.8rem; background:rgba(184,131,63,0.08); border-radius:8px; border:1px solid rgba(184,131,63,0.22); font-size:0.87rem; color:var(--text-primary); line-height:1.5;">
+            <strong>📌 First-Time Activation Notice:</strong><br>
+            If you have not activated FormSubmit yet, please check your Gmail (<strong>${esc(targetEmail)}</strong>) for an email from FormSubmit with the subject <em>"Action Required: Activate FormSubmit"</em> and click <strong>"Activate Form"</strong>. After clicking it once, all future submissions will arrive directly in your inbox!
           </div>
-        `;
-      }
-      form.reset();
-      fields.forEach((f) => f.classList.remove("valid"));
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.8rem;">
+            <a class="btn btn-primary" href="${gmailLink}" target="_blank" rel="noopener" style="padding:0.45rem 0.9rem; font-size:0.88rem;">Open in Gmail ↗</a>
+            <a class="btn btn-ghost" href="${mailtoLink}" style="padding:0.45rem 0.9rem; font-size:0.88rem;">Open Mail App ↗</a>
+          </div>
+        </div>
+      `;
+    }
 
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnContent;
-      }
-    }, 450);
+    form.reset();
+    fields.forEach((f) => f.classList.remove("valid"));
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnContent;
+    }
   });
 }
 
