@@ -73,23 +73,23 @@
   renderer.setSize(initialWidth, initialHeight, false);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-  // 2. Lighting Setup
-  const ambientLight = new THREE.AmbientLight(0x0e172a, 1.3);
+  // 2. Lighting Setup (Slate Stone & Burnt Ochre Earth-Tone Architecture)
+  const ambientLight = new THREE.AmbientLight(0xe8edf2, 1.4);
   scene.add(ambientLight);
 
-  const keyLight = new THREE.DirectionalLight(0xfff3e0, 2.1);
+  const keyLight = new THREE.DirectionalLight(0xfff6ea, 2.0);
   keyLight.position.set(3, 3, 4);
   scene.add(keyLight);
 
-  const cyanRim = new THREE.DirectionalLight(0x00f0ff, 2.8);
-  cyanRim.position.set(-3.5, 2.5, -2);
-  scene.add(cyanRim);
+  const ochreRim = new THREE.DirectionalLight(0xb8833f, 2.5);
+  ochreRim.position.set(-3.5, 2.5, -2);
+  scene.add(ochreRim);
 
-  const violetRim = new THREE.DirectionalLight(0xa855f7, 2.2);
-  violetRim.position.set(3.5, -1.5, -2);
-  scene.add(violetRim);
+  const slateRim = new THREE.DirectionalLight(0x4e5d6c, 2.0);
+  slateRim.position.set(3.5, -1.5, -2);
+  scene.add(slateRim);
 
-  const fillLight = new THREE.PointLight(0x38bdf8, 1.5, 8);
+  const fillLight = new THREE.PointLight(0xd4974c, 1.2, 8);
   fillLight.position.set(0, -2, 2.5);
   scene.add(fillLight);
 
@@ -102,21 +102,21 @@
   });
 
   const hairMat = new THREE.MeshStandardMaterial({
-    color: 0x141824,
+    color: 0x1e2022,
     roughness: 0.8,
     metalness: 0.1,
     flatShading: true
   });
 
   const hoodieMat = new THREE.MeshStandardMaterial({
-    color: 0x0f172a,
-    roughness: 0.75,
-    metalness: 0.15,
+    color: 0x3d4752, // Slate stone tech hoodie
+    roughness: 0.72,
+    metalness: 0.12,
     flatShading: true
   });
 
-  const neonCyanMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
-  const neonVioletMat = new THREE.MeshBasicMaterial({ color: 0xa855f7 });
+  const neonOchreMat = new THREE.MeshBasicMaterial({ color: 0xb8833f });
+  const neonSlateMat = new THREE.MeshBasicMaterial({ color: 0x4e5d6c });
 
   // 4. Character Master Group
   const avatarGroup = new THREE.Group();
@@ -131,15 +131,15 @@
   chest.position.set(0, -1.35, 0);
   torsoGroup.add(chest);
 
-  const innerShirt = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.45, 0.35, 8), new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.8 }));
+  const innerShirt = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.45, 0.35, 8), new THREE.MeshStandardMaterial({ color: 0x222831, roughness: 0.8 }));
   innerShirt.position.set(0, -0.72, 0.08);
   torsoGroup.add(innerShirt);
 
-  const zip = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.95, 0.04), neonCyanMat);
+  const zip = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.95, 0.04), neonOchreMat);
   zip.position.set(0, -1.25, 0.88);
   torsoGroup.add(zip);
 
-  const leftSeam = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.03, 0.35), neonVioletMat);
+  const leftSeam = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.03, 0.35), neonSlateMat);
   leftSeam.position.set(-0.75, -0.92, 0);
   leftSeam.rotation.z = -0.25;
   torsoGroup.add(leftSeam);
@@ -155,19 +155,19 @@
   torsoGroup.add(hpGroup);
 
   const hpBandGeo = new THREE.TorusGeometry(0.52, 0.045, 8, 24, Math.PI * 0.9);
-  const hpBandMat = new THREE.MeshStandardMaterial({ color: 0x0a0f1d, metalness: 0.8, roughness: 0.3 });
+  const hpBandMat = new THREE.MeshStandardMaterial({ color: 0x1e242d, metalness: 0.8, roughness: 0.3 });
   const hpBand = new THREE.Mesh(hpBandGeo, hpBandMat);
   hpBand.rotation.x = Math.PI / 2 + 0.3;
   hpBand.position.set(0, 0, -0.1);
   hpGroup.add(hpBand);
 
-  const cushionMat = new THREE.MeshStandardMaterial({ color: 0x162032, metalness: 0.5, roughness: 0.5 });
+  const cushionMat = new THREE.MeshStandardMaterial({ color: 0x343e4a, metalness: 0.5, roughness: 0.5 });
   const leftCushion = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.12, 12), cushionMat);
   leftCushion.rotation.z = Math.PI / 2;
   leftCushion.position.set(-0.52, 0.05, 0.08);
   hpGroup.add(leftCushion);
 
-  const leftLedRing = new THREE.Mesh(new THREE.RingGeometry(0.08, 0.13, 16), neonCyanMat);
+  const leftLedRing = new THREE.Mesh(new THREE.RingGeometry(0.08, 0.13, 16), neonOchreMat);
   leftLedRing.rotation.y = -Math.PI / 2;
   leftLedRing.position.set(-0.59, 0.05, 0.08);
   hpGroup.add(leftLedRing);
@@ -274,8 +274,8 @@
   const glassesGroup = new THREE.Group();
   headGroup.add(glassesGroup);
 
-  const frameMat = new THREE.MeshStandardMaterial({ color: 0x090d16, metalness: 0.9, roughness: 0.2 });
-  const lensMat = new THREE.MeshPhysicalMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.35, roughness: 0.1, transmission: 0.6, thickness: 0.1 });
+  const frameMat = new THREE.MeshStandardMaterial({ color: 0x1e2022, metalness: 0.8, roughness: 0.25 });
+  const lensMat = new THREE.MeshPhysicalMaterial({ color: 0xb8833f, transparent: true, opacity: 0.25, roughness: 0.1, transmission: 0.7, thickness: 0.1 });
 
   const leftFrame = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.022, 6, 20), frameMat);
   leftFrame.position.set(-0.2, 0.08, 0.55);
@@ -313,14 +313,14 @@
 
   const hudRing = new THREE.Mesh(
     new THREE.RingGeometry(0.45, 0.48, 32),
-    new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide, transparent: true, opacity: 0.7 })
+    new THREE.MeshBasicMaterial({ color: 0xb8833f, side: THREE.DoubleSide, transparent: true, opacity: 0.75 })
   );
   hudRing.position.set(0, 0.08, 0.62);
   cyberHudGroup.add(hudRing);
 
   const hudCross = new THREE.Mesh(
     new THREE.BoxGeometry(0.65, 0.015, 0.01),
-    new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.8 })
+    new THREE.MeshBasicMaterial({ color: 0xb8833f, transparent: true, opacity: 0.85 })
   );
   hudCross.position.set(0, 0.08, 0.63);
   cyberHudGroup.add(hudCross);
@@ -333,15 +333,15 @@
 
   const screenBody = new THREE.Mesh(
     new THREE.BoxGeometry(1.2, 0.72, 0.04),
-    new THREE.MeshStandardMaterial({ color: 0x070c18, metalness: 0.85, roughness: 0.25 })
+    new THREE.MeshStandardMaterial({ color: 0x1e2022, metalness: 0.7, roughness: 0.3 })
   );
   tabletGroup.add(screenBody);
 
-  const screenFace = new THREE.Mesh(new THREE.PlaneGeometry(1.12, 0.64), new THREE.MeshBasicMaterial({ color: 0x051326 }));
+  const screenFace = new THREE.Mesh(new THREE.PlaneGeometry(1.12, 0.64), new THREE.MeshBasicMaterial({ color: 0x15181c }));
   screenFace.position.set(0, 0, 0.025);
   tabletGroup.add(screenFace);
 
-  const codeColors = [0x00f0ff, 0x38bdf8, 0xa855f7, 0x10b981, 0x00f0ff];
+  const codeColors = [0xb8833f, 0x4e5d6c, 0x9e6f33, 0xd4974c, 0x5a626a];
   const codeWidths = [0.45, 0.75, 0.6, 0.85, 0.4];
   const codeX = [-0.28, -0.12, -0.2, -0.08, -0.3];
   const codeY = [0.18, 0.08, -0.02, -0.12, -0.22];
@@ -363,8 +363,8 @@
 
   const ballGeo = new THREE.IcosahedronGeometry(0.26, 1);
   const ballMat = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    roughness: 0.4,
+    color: 0xfafafa,
+    roughness: 0.45,
     metalness: 0.1,
     flatShading: true
   });
@@ -374,14 +374,14 @@
   // Ball Neon Rings
   const ballRing = new THREE.Mesh(
     new THREE.TorusGeometry(0.32, 0.012, 8, 24),
-    neonCyanMat
+    neonOchreMat
   );
   soccerBallGroup.add(ballRing);
 
   // Orbital Gyroscopic Ring
   const orbitRing = new THREE.Mesh(
     new THREE.TorusGeometry(1.7, 0.014, 8, 48),
-    new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.45 })
+    new THREE.MeshBasicMaterial({ color: 0xb8833f, transparent: true, opacity: 0.4 })
   );
   orbitRing.rotation.x = Math.PI / 3;
   orbitRing.rotation.y = Math.PI / 6;
@@ -391,7 +391,7 @@
   const satGroup = new THREE.Group();
   avatarGroup.add(satGroup);
   const satGeo = new THREE.OctahedronGeometry(0.08, 0);
-  const satMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+  const satMat = new THREE.MeshBasicMaterial({ color: 0xb8833f });
   const satellites = [];
 
   for (let i = 0; i < 3; i++) {
@@ -426,9 +426,9 @@
     pCanvas.height = 32;
     const ctx = pCanvas.getContext('2d');
     const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-    grad.addColorStop(0, 'rgba(0, 240, 255, 1)');
-    grad.addColorStop(0.35, 'rgba(168, 85, 247, 0.5)');
-    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    grad.addColorStop(0, 'rgba(184, 131, 63, 0.9)');
+    grad.addColorStop(0.35, 'rgba(78, 93, 108, 0.45)');
+    grad.addColorStop(1, 'rgba(249, 249, 250, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 32, 32);
     return new THREE.CanvasTexture(pCanvas);
@@ -438,7 +438,7 @@
     size: 0.12,
     map: createDotTexture(),
     transparent: true,
-    opacity: 0.7,
+    opacity: 0.65,
     blending: THREE.AdditiveBlending,
     depthWrite: false
   });

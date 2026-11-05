@@ -106,8 +106,9 @@ function renderLayout() {
       root.dataset.theme = t;
       try { localStorage.setItem("theme", t); } catch (e) {}
       tBtn.textContent = t === "dark" ? "☀️" : "🌙";
+      tBtn.setAttribute("aria-label", t === "dark" ? "Switch to light mode" : "Switch to dark mode");
     };
-    applyTheme(root.dataset.theme || "dark");
+    applyTheme(root.dataset.theme || "light");
     tBtn.addEventListener("click", () => applyTheme(root.dataset.theme === "dark" ? "light" : "dark"));
   }
 }
@@ -197,8 +198,16 @@ function initHobbiesPage() {
 function initPointerFX() {
   if (reduce) return;
 
-  // 3D Tilt & Spot effects
+  // 3D Tilt, Spot & Cursor Spotlight effects
   document.addEventListener("mousemove", (e) => {
+    // Project Cards & Bento Tiles cursor spotlight tracking
+    const card = e.target.closest(".card, .tile, .hobby-detail-card, .hobby-banner-card");
+    if (card) {
+      const cr = card.getBoundingClientRect();
+      card.style.setProperty("--mouse-x", (e.clientX - cr.left) + "px");
+      card.style.setProperty("--mouse-y", (e.clientY - cr.top) + "px");
+    }
+
     const t = e.target.closest(".tilt");
     if (t) {
       const r = t.getBoundingClientRect();
@@ -223,6 +232,11 @@ function initPointerFX() {
       t.style.setProperty("--rx", "0deg");
       t.style.setProperty("--ry", "0deg");
       t.classList.remove("hot");
+    }
+    const card = e.target.closest(".card, .tile, .hobby-detail-card, .hobby-banner-card");
+    if (card && !card.contains(e.relatedTarget)) {
+      card.style.setProperty("--mouse-x", "-999px");
+      card.style.setProperty("--mouse-y", "-999px");
     }
   });
 
