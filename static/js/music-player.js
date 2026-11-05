@@ -320,6 +320,10 @@
 
   function setUIPlayState(playing) {
     isPlaying = playing;
+    window.isMusicPlaying = playing;
+    if (window.set3DAvatarMusicMode) {
+      window.set3DAvatarMusicMode(playing);
+    }
     if (dom.playIcon) dom.playIcon.style.display = playing ? "none" : "block";
     if (dom.pauseIcon) dom.pauseIcon.style.display = playing ? "block" : "none";
     if (dom.eqBars) {
@@ -330,6 +334,21 @@
     }
     if (!playing) stopSynth();
   }
+
+  // Global trigger hooks for 3D Avatar
+  window.triggerMusicPlay = function () {
+    if (!isPlaying) {
+      playTrackAudio();
+    }
+  };
+
+  window.toggleMusicPlayback = function () {
+    if (isPlaying) {
+      pauseTrackAudio();
+    } else {
+      playTrackAudio();
+    }
+  };
 
   function updateProgressDisplay(cur, dur) {
     if (!dur || isNaN(dur)) return;

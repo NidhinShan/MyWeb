@@ -355,28 +355,41 @@
     tabletGroup.add(lineMesh);
   }
 
-  // --- 3D Low-Poly Soccer Ball (Play Mode) ---
-  const soccerBallGroup = new THREE.Group();
-  soccerBallGroup.position.set(1.2, 0.2, 0.4);
-  soccerBallGroup.scale.set(0, 0, 0); // Initially hidden
-  avatarGroup.add(soccerBallGroup);
+  // --- 3D Music Jam Visualizer (Play Music Mode) ---
+  const musicVisualGroup = new THREE.Group();
+  musicVisualGroup.position.set(1.2, 0.2, 0.4);
+  musicVisualGroup.scale.set(0, 0, 0); // Initially hidden
+  avatarGroup.add(musicVisualGroup);
 
-  const ballGeo = new THREE.IcosahedronGeometry(0.26, 1);
-  const ballMat = new THREE.MeshStandardMaterial({
-    color: 0xfafafa,
-    roughness: 0.45,
-    metalness: 0.1,
-    flatShading: true
+  // Floating Vinyl Disc
+  const vinylGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.02, 24);
+  const vinylMat = new THREE.MeshStandardMaterial({
+    color: 0x1e2022,
+    roughness: 0.35,
+    metalness: 0.8
   });
-  const ballMesh = new THREE.Mesh(ballGeo, ballMat);
-  soccerBallGroup.add(ballMesh);
+  const vinylMesh = new THREE.Mesh(vinylGeo, vinylMat);
+  vinylMesh.rotation.x = Math.PI / 4;
+  musicVisualGroup.add(vinylMesh);
 
-  // Ball Neon Rings
-  const ballRing = new THREE.Mesh(
-    new THREE.TorusGeometry(0.32, 0.012, 8, 24),
-    neonOchreMat
+  // Vinyl Center Label in Ochre
+  const labelGeo = new THREE.CylinderGeometry(0.09, 0.09, 0.025, 16);
+  const labelMat = new THREE.MeshBasicMaterial({ color: 0xb8833f });
+  const labelMesh = new THREE.Mesh(labelGeo, labelMat);
+  labelMesh.rotation.x = Math.PI / 4;
+  musicVisualGroup.add(labelMesh);
+
+  // Soundwave Rings
+  const soundWave1 = new THREE.Mesh(
+    new THREE.TorusGeometry(0.38, 0.012, 8, 28),
+    new THREE.MeshBasicMaterial({ color: 0xb8833f, transparent: true, opacity: 0.8 })
   );
-  soccerBallGroup.add(ballRing);
+  const soundWave2 = new THREE.Mesh(
+    new THREE.TorusGeometry(0.48, 0.01, 8, 28),
+    new THREE.MeshBasicMaterial({ color: 0x4e5d6c, transparent: true, opacity: 0.6 })
+  );
+  musicVisualGroup.add(soundWave1);
+  musicVisualGroup.add(soundWave2);
 
   // Orbital Gyroscopic Ring
   const orbitRing = new THREE.Mesh(
@@ -450,7 +463,7 @@
   // ==========================================
   // 5. Interactive Mode Switcher State
   // ==========================================
-  let currentMode = 'normal'; // 'normal' | 'focus' | 'football' | 'cyber'
+  let currentMode = 'normal'; // 'normal' | 'focus' | 'music' | 'cyber'
 
   function setAvatarMode(mode) {
     currentMode = mode;
@@ -463,7 +476,30 @@
     } else {
       cyberHudGroup.visible = false;
     }
+
+    if (mode === 'music') {
+      if (window.triggerMusicPlay) {
+        window.triggerMusicPlay();
+      }
+    }
   }
+
+  // Allow music player to switch 3D character into music mode when playing
+  window.set3DAvatarMusicMode = function(active) {
+    if (active) {
+      if (currentMode !== 'music') {
+        currentMode = 'music';
+        document.querySelectorAll('.avatar-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.mode === 'music');
+        });
+      }
+    } else if (currentMode === 'music') {
+      currentMode = 'normal';
+      document.querySelectorAll('.avatar-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.mode === 'normal');
+      });
+    }
+  };
 
   // Create Interactive Toolbar overlay if not present
   function setupAvatarControls() {
@@ -474,7 +510,7 @@
       bar.innerHTML = `
         <button class="avatar-btn active" data-mode="normal" title="Normal Dev Mode">👨‍💻 Dev</button>
         <button class="avatar-btn" data-mode="focus" title="Put on Headphones to Focus">🎧 Focus</button>
-        <button class="avatar-btn" data-mode="football" title="Summon 3D Soccer Ball">⚽ Play</button>
+        <button class="avatar-btn" data-mode="music" title="Play Music & Sing">🎵 Play Music</button>
         <button class="avatar-btn" data-mode="cyber" title="Activate Hologram HUD">⚡ Cyber</button>
       `;
       container.appendChild(bar);
@@ -645,31 +681,55 @@
     avatarGroup.rotation.y = orbitYaw + spinImpulse * 6.28;
     avatarGroup.rotation.x = orbitPitch;
 
-    // Head Gaze Tracking: responds to pointer
+    // Head Gaze Tracking & Music Lip-Sync Animation
     headGroup.rotation.y = pointer.currentX * 0.55;
-    headGroup.rotation.x = -pointer.currentY * 0.35;
-    headGroup.rotation.z = -pointer.currentX * 0.08;
+
+    // --- Mouth Lip-Sync & Head Groove When Music Plays ---
+    if (window.isMusicPlaying) {
+      const beat1 = Math.abs(Math.sin(elapsedTime * 14));
+      const beat2 = Math.abs(Math.cos(elapsedTime * 9));
+      const mouthOpen = (beat1 * 0.65 + beat2 * 0.45);
+      
+      // Dynamic vertical mouth opening/singing
+      mouth.scale.y = 1 + mouthOpen * 3.8;
+      mouth.scale.x = 1 + Math.sin(elapsedTime * 7) * 0.25;
+      mouth.position.y = -0.16 - (mouthOpen * 0.025);
+
+      // Head groove & rhythmic bobbing
+      headGroup.rotation.x = -pointer.currentY * 0.35 + Math.sin(elapsedTime * 6) * 0.07;
+      headGroup.rotation.z = -pointer.currentX * 0.08 + Math.cos(elapsedTime * 3) * 0.035;
+    } else {
+      mouth.scale.y += (1 - mouth.scale.y) * 0.15;
+      mouth.scale.x += (1 - mouth.scale.x) * 0.15;
+      mouth.position.y += (-0.16 - mouth.position.y) * 0.15;
+
+      headGroup.rotation.x = -pointer.currentY * 0.35;
+      headGroup.rotation.z = -pointer.currentX * 0.08;
+    }
 
     torsoGroup.rotation.y = pointer.currentX * 0.22;
     torsoGroup.rotation.x = -pointer.currentY * 0.12;
 
     // --- Mode-Specific Animations ---
-    // 1. Focus Mode: Headphones slide up smoothly to ears!
-    const targetHpY = currentMode === 'focus' ? 0.05 : -0.65;
-    const targetHpRotX = currentMode === 'focus' ? 0 : Math.PI / 2 + 0.3;
+    // 1. Focus / Music Mode: Headphones slide up smoothly to ears!
+    const isMusicOrFocus = currentMode === 'focus' || currentMode === 'music' || window.isMusicPlaying;
+    const targetHpY = isMusicOrFocus ? 0.05 : -0.65;
+    const targetHpRotX = isMusicOrFocus ? 0 : Math.PI / 2 + 0.3;
     hpGroup.position.y += (targetHpY - hpGroup.position.y) * 0.08;
     hpGroup.rotation.x += (targetHpRotX - hpGroup.rotation.x) * 0.08;
 
-    // 2. Play Mode: 3D Soccer Ball appears, bounces & orbits
-    const targetBallScale = currentMode === 'football' ? 1 : 0;
-    soccerBallGroup.scale.lerp(new THREE.Vector3(targetBallScale, targetBallScale, targetBallScale), 0.08);
+    // 2. Play Music Mode: 3D Vinyl Disc & Glowing Rings materialize & orbit!
+    const targetMusicScale = (currentMode === 'music' || window.isMusicPlaying) ? 1 : 0;
+    musicVisualGroup.scale.lerp(new THREE.Vector3(targetMusicScale, targetMusicScale, targetMusicScale), 0.08);
 
-    if (currentMode === 'football') {
-      soccerBallGroup.position.x = 1.15 + Math.sin(elapsedTime * 2.5) * 0.15;
-      soccerBallGroup.position.y = 0.15 + Math.abs(Math.sin(elapsedTime * 3.5)) * 0.35;
-      ballMesh.rotation.x += 0.04;
-      ballMesh.rotation.y += 0.05;
-      ballRing.rotation.z += 0.03;
+    if (currentMode === 'music' || window.isMusicPlaying) {
+      vinylMesh.rotation.y += 0.04;
+      soundWave1.rotation.x += 0.03;
+      soundWave1.rotation.y += 0.02;
+      soundWave2.rotation.z += 0.03;
+      const pulse = 1 + Math.sin(elapsedTime * 8) * 0.15;
+      soundWave2.scale.set(pulse, pulse, pulse);
+      musicVisualGroup.position.y = 0.2 + Math.sin(elapsedTime * 3) * 0.12;
     }
 
     // 3. Cyber Mode: HUD radar rotation
