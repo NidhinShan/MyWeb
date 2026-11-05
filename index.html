@@ -54,91 +54,109 @@
             </div>
           </div>
 
-          <!-- 3D Interactive Canvas Viewport -->
-          <div class="hero-3d-wrap" id="hero-3d-wrap" title="Drag to Orbit 360° · Switch modes with top buttons · Double-click to spin">
-            <canvas id="hero-3d-canvas" aria-label="Interactive 3D Male Developer Avatar"></canvas>
-            <div class="canvas-badge">
-              <span class="live-dot"></span>
-              <span>Interactive 3D · Drag to Orbit 360°</span>
+          <!-- Right Column: Hero Visual Side (Music Player + 3D Avatar) -->
+          <div class="hero-visual-side">
+
+            <!-- Anti-Gravity Bento Music Player Card (Full Song Playback, No Video) -->
+            <div class="hero-music-card" id="hero-music-card">
+              <div class="hmc-luminescent-edge"></div>
+
+              <div class="hmc-header">
+                <div class="hmc-badge">
+                  <span class="hmc-live-dot"></span>
+                  <span>Focus Beats · Full Audio</span>
+                </div>
+                <button class="hmc-queue-btn" id="hmc-queue-toggle" aria-label="Toggle playlist drawer">
+                  <span class="hmc-queue-count">8</span>
+                  <span>Queue</span>
+                  <svg class="hmc-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+              </div>
+
+              <div class="hmc-track-main">
+                <div class="hmc-cover-wrap">
+                  <div class="hmc-cover" id="hmc-cover">
+                    <img id="hmc-cover-img" src="" alt="Album artwork" style="display:none;" />
+                    <span id="hmc-cover-emoji" class="hmc-cover-emoji">🎧</span>
+                  </div>
+                </div>
+
+                <div class="hmc-track-meta">
+                  <span class="hmc-eyebrow">NOW PLAYING · FULL SONG</span>
+                  <h3 class="hmc-title" id="hmc-title">Attention</h3>
+                  <p class="hmc-artist" id="hmc-artist">Charlie Puth</p>
+                </div>
+
+                <div class="hmc-eq" id="hmc-eq">
+                  <span class="hmc-eq-bar"></span>
+                  <span class="hmc-eq-bar"></span>
+                  <span class="hmc-eq-bar"></span>
+                  <span class="hmc-eq-bar"></span>
+                  <span class="hmc-eq-bar"></span>
+                </div>
+              </div>
+
+              <!-- Full Song Scrub Bar -->
+              <div class="hmc-progress-wrap">
+                <div class="hmc-progress-bar" id="hmc-progress-bar">
+                  <div class="hmc-progress-fill" id="hmc-progress-fill">
+                    <div class="hmc-progress-knob"></div>
+                  </div>
+                </div>
+                <div class="hmc-time-row font-mono">
+                  <span id="hmc-time-cur">0:00</span>
+                  <span id="hmc-time-total">3:31</span>
+                </div>
+              </div>
+
+              <!-- Controls -->
+              <div class="hmc-controls">
+                <button class="hmc-ctrl-btn" id="hmc-mute-btn" title="Toggle Mute" aria-label="Mute audio">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </button>
+                <button class="hmc-ctrl-btn" id="hmc-prev-btn" title="Previous Track" aria-label="Previous song">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                <button class="hmc-play-btn" id="hmc-play-btn" title="Play / Pause full song" aria-label="Play or pause song">
+                  <svg id="hmc-play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <svg id="hmc-pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                </button>
+                <button class="hmc-ctrl-btn" id="hmc-next-btn" title="Next Track" aria-label="Next song">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+              </div>
+
+              <!-- Expandable Playlist Queue Drawer -->
+              <div class="hmc-queue-drawer" id="hmc-queue-drawer">
+                <div class="hmc-queue-head">
+                  <span>Queued Tracks · Full Songs</span>
+                  <span class="hmc-queue-badge">8 Tracks</span>
+                </div>
+                <div class="hmc-queue-list" id="hmc-queue-list"></div>
+              </div>
             </div>
-            <!-- Graceful Fallback if WebGL is unavailable -->
-            <div class="hero-3d-fallback" id="hero-3d-fallback" style="display: none;">
-              <div class="fallback-glow"></div>
-              <div class="fallback-icon">👨‍💻</div>
-              <p>Developer Avatar Active</p>
+
+            <!-- 3D Interactive Canvas Viewport (Compact Viewport) -->
+            <div class="hero-3d-wrap hero-3d-compact" id="hero-3d-wrap" title="Drag to Orbit 360° · Switch modes with top buttons · Double-click to spin">
+              <canvas id="hero-3d-canvas" aria-label="Interactive 3D Male Developer Avatar"></canvas>
+              <div class="canvas-badge">
+                <span class="live-dot"></span>
+                <span>Interactive 3D Avatar · 360°</span>
+              </div>
+              <!-- Graceful Fallback if WebGL is unavailable -->
+              <div class="hero-3d-fallback" id="hero-3d-fallback" style="display: none;">
+                <div class="fallback-glow"></div>
+                <div class="fallback-icon">👨‍💻</div>
+                <p>Developer Avatar Active</p>
+              </div>
             </div>
+
           </div>
         </div>
       </section>
 
       <!-- Key Stats Bento Tile -->
       <section class="tile t-stats reveal" id="stats"></section>
-
-      <!-- Anti-Gravity Earth-Tone Audio Player Bento Tile -->
-      <section class="tile t-music-player tilt reveal" id="music-player-section">
-        <div class="mp-luminescent-edge"></div>
-        <div class="mp-header">
-          <div class="mp-badge">
-            <span class="mp-dot"></span>
-            <span>Audio Lab · Focus Beats</span>
-          </div>
-          <button class="mp-queue-btn" id="mp-queue-toggle" aria-label="Toggle playlist drawer">
-            <span class="mp-queue-count">8</span>
-            <span>Queue</span>
-            <svg class="mp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-        </div>
-        <div class="mp-track-wrap">
-          <div class="mp-cover" id="mp-cover">
-            <div class="mp-cover-fallback"><span class="mp-cover-emoji">🎧</span></div>
-          </div>
-          <div class="mp-track-info">
-            <span class="mp-eyebrow">Now Playing</span>
-            <h3 class="mp-title" id="mp-title">Attention</h3>
-            <p class="mp-artist" id="mp-artist">Charlie Puth</p>
-          </div>
-          <div class="mp-eq-container" id="mp-eq">
-            <span class="mp-eq-bar"></span>
-            <span class="mp-eq-bar"></span>
-            <span class="mp-eq-bar"></span>
-            <span class="mp-eq-bar"></span>
-            <span class="mp-eq-bar"></span>
-          </div>
-        </div>
-        <div class="mp-progress-container">
-          <div class="mp-progress-bar" id="mp-progress-bar">
-            <div class="mp-progress-fill" id="mp-progress-fill">
-              <div class="mp-progress-knob"></div>
-            </div>
-          </div>
-          <div class="mp-time-row">
-            <span id="mp-time-current" class="font-mono">0:00</span>
-            <span id="mp-time-total" class="font-mono">3:31</span>
-          </div>
-        </div>
-        <div class="mp-controls">
-          <button class="mp-ctrl-btn" id="mp-mute-btn" title="Toggle Mute" aria-label="Mute or Unmute">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-          </button>
-          <button class="mp-ctrl-btn" id="mp-prev-btn" title="Previous Track" aria-label="Previous Track">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-          </button>
-          <button class="mp-play-btn" id="mp-play-btn" title="Play / Pause" aria-label="Play or Pause Track">
-            <svg id="mp-play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <svg id="mp-pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-          </button>
-          <button class="mp-ctrl-btn" id="mp-next-btn" title="Next Track" aria-label="Next Track">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-          </button>
-        </div>
-        <div class="mp-queue-drawer" id="mp-queue-drawer">
-          <div class="mp-queue-header">
-            <span>Queued Tracks</span>
-            <span class="mp-queue-badge">7 Tracks</span>
-          </div>
-          <div class="mp-queue-list" id="mp-queue-list"></div>
-        </div>
-      </section>
 
       <!-- Current Focus / Live Status Tile -->
       <section class="tile t-status reveal" id="status"></section>
